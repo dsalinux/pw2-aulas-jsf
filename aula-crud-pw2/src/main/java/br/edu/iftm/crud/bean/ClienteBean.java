@@ -1,52 +1,33 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.edu.iftm.crud.bean;
 
 import br.edu.iftm.crud.entity.Cliente;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import br.edu.iftm.crud.logic.ClienteLogic;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
-import lombok.Getter;
-import lombok.Setter;
 
-
+/**
+ *
+ * @author danilo
+ */
 @Named
 @SessionScoped
-public class ClienteBean implements Serializable{
-    
-    public enum EstadoTela {
-        BUSCANDO,
-        INSERINDO,
-        EDITANDO
-    }
-    
-    @Getter
-    private EstadoTela estadoTela = EstadoTela.BUSCANDO;
+public class ClienteBean extends CrudBean<Cliente, ClienteLogic>{
 
-    @Getter @Setter
-    private Cliente cliente = new Cliente();
-    @Getter
-    private List<Cliente> clientes = new ArrayList<>();
+    @Inject
+    private ClienteLogic logic;
     
-    public void novo(){
-        cliente = new Cliente();
-        estadoTela = EstadoTela.INSERINDO;
-    }
-    public void salvar(){
-        clientes.add(cliente);
-        cliente = new Cliente();
-    }
-    public void editar(Cliente cli){
-        cliente = cli;
-        estadoTela = EstadoTela.EDITANDO;
+    public ClienteBean() {
+        super(Cliente.class);
     }
     
-    public void buscar() {
-        if(!estadoTela.equals(EstadoTela.BUSCANDO)) {
-            estadoTela = EstadoTela.BUSCANDO;
-            return;
-        }
-        //Buscar no banco de dados
+    @Override
+    public ClienteLogic getLogic() {
+        return logic;
     }
-
+    
 }

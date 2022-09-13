@@ -30,15 +30,15 @@
                          rendered="#{clienteBean.estadoTela.name() != 'BUSCANDO'}">
             
                 <p:outputLabel value="Email"></p:outputLabel>
-                <p:inputText value="#{clienteBean.cliente.email}"
+                <p:inputText value="#{clienteBean.entidade.email}"
                              disabled="#{clienteBean.estadoTela.name() == 'EDITANDO'}"></p:inputText>
                 
                 <p:outputLabel value="Nome"></p:outputLabel>
-                <p:inputText value="#{clienteBean.cliente.nome}"></p:inputText>
+                <p:inputText value="#{clienteBean.entidade.nome}"></p:inputText>
             
             </p:panelGrid>
             
-            <p:dataTable value="#{clienteBean.clientes}" var="cli"
+            <p:dataTable value="#{clienteBean.entidades}" var="cli"
                          rendered="#{clienteBean.estadoTela.name() == 'BUSCANDO'}">
                 <p:column>
                     <p:commandButton value="Editar" update="@form"
@@ -55,4 +55,3 @@
         
     </h:body>
 </html>
-
