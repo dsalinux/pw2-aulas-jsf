@@ -26,16 +26,17 @@
                         ></p:commandButton>
                 </p:toolbarGroup>
             </p:toolbar>
+            <p:messages showDetail="true" ></p:messages>
+            <p:growl></p:growl>
             <p:panelGrid columns="2"
                          rendered="#{clienteBean.estadoTela.name() != 'BUSCANDO'}">
-            
-                <p:outputLabel value="Email"></p:outputLabel>
-                <p:inputText value="#{clienteBean.entidade.email}"
-                             disabled="#{clienteBean.estadoTela.name() == 'EDITANDO'}"></p:inputText>
                 
                 <p:outputLabel value="Nome"></p:outputLabel>
                 <p:inputText value="#{clienteBean.entidade.nome}"></p:inputText>
             
+                <p:outputLabel value="Endereço"></p:outputLabel>
+                <p:inputText value="#{clienteBean.entidade.endereco}"></p:inputText>
+                
             </p:panelGrid>
             
             <p:dataTable value="#{clienteBean.entidades}" var="cli"
@@ -47,8 +48,8 @@
                 <p:column headerText="Nome" sortBy="#{cli.nome}" filterBy="#{cli.nome}" filterMatchMode="contains">
                     <h:outputText value="#{cli.nome}"></h:outputText>
                 </p:column>
-                <p:column headerText="Email">
-                    <h:outputText value="#{cli.email}"></h:outputText>
+                <p:column headerText="Endereço">
+                    <h:outputText value="#{cli.endereco}"></h:outputText>
                 </p:column>
             </p:dataTable>
         </h:form>

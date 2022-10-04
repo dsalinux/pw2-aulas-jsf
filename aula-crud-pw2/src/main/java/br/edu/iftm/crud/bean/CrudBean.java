@@ -1,22 +1,18 @@
 package br.edu.iftm.crud.bean;
 
-import br.edu.iftm.crud.entity.Cliente;
-import br.edu.iftm.crud.logic.ClienteLogic;
 import br.edu.iftm.crud.logic.CrudLogic;
-import java.io.Serializable;
+import br.edu.iftm.crud.util.JSFUtil;
+import br.edu.iftm.crud.util.exception.ErroSistemaException;
+import br.edu.iftm.crud.util.exception.ErroUsuarioException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import javax.faces.application.FacesMessage;
 import lombok.Getter;
 import lombok.Setter;
 
-
-public abstract class CrudBean<E, L extends CrudLogic<E> > implements Serializable{
+public abstract class CrudBean<E, L extends CrudLogic<E> > extends JSFUtil{
     
     public enum EstadoTela {
         BUSCANDO,
@@ -50,8 +46,17 @@ public abstract class CrudBean<E, L extends CrudLogic<E> > implements Serializab
         estadoTela = EstadoTela.INSERINDO;
     }
     public void salvar(){
-        getLogic().salvar(entidade);
-        novaInstancia();
+        try {
+            getLogic().salvar(entidade);
+            novaInstancia();
+            addInfoMensagem("Cliente salvo com sucesso.");
+        } catch (ErroUsuarioException ex) {
+            addAvisoMensagem(ex);
+        } catch (ErroSistemaException ex) {
+            Logger.getLogger(CrudBean.class.getName()).log(Level.SEVERE, null, ex);
+            addErroMensagem(ex);
+        }
+        
     }
     public void editar(E endidade){
         this.entidade = endidade;
