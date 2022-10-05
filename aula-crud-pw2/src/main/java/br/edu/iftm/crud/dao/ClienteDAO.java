@@ -19,11 +19,22 @@ public class ClienteDAO implements Serializable {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conexao =
                     DriverManager.getConnection("jdbc:mysql://localhost/aula_db_pw2", "root", "root");
-            String sql = "insert into cliente (nome, endereco) values (?,?)";
-            PreparedStatement ps = conexao.prepareStatement(sql);
+            String sql;
+            PreparedStatement ps;
+            if(cliente.getId() != null) {
+                sql = "update cliente set nome = ?, endereco = ? where id = ?";
+                ps = conexao.prepareStatement(sql);
+                ps.setInt(3, cliente.getId());
+            } else {
+                sql = "insert into cliente (nome, endereco) values (?,?)";
+                ps = conexao.prepareStatement(sql);
+            }
+            conexao.setAutoCommit(false);
+            
             ps.setString(1, cliente.getNome());
             ps.setString(2, cliente.getEndereco());
             ps.execute();
+            conexao.rollback();
             conexao.close();
             
         } catch (SQLException ex) {
