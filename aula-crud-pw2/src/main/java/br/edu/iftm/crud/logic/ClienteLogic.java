@@ -23,8 +23,8 @@ public class ClienteLogic implements CrudLogic<Cliente>{
             throw new ErroUsuarioException("O nome é obrigatório.");
         }
        
-        dao.salvar(cliente);
-        return null;
+        cliente = dao.salvarJPA(cliente);
+        return cliente;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ClienteLogic implements CrudLogic<Cliente>{
     @Override
     public List<Cliente> buscar() {
         List<Cliente> clientes = new ArrayList<>();
-        clientes = dao.listar();
+        clientes = dao.listarJPA();
         return clientes;
     }
 

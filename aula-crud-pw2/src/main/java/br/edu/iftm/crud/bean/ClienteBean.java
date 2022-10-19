@@ -5,7 +5,10 @@
 package br.edu.iftm.crud.bean;
 
 import br.edu.iftm.crud.entity.Cliente;
+import br.edu.iftm.crud.entity.TipoPessoa;
 import br.edu.iftm.crud.logic.ClienteLogic;
+import br.edu.iftm.crud.logic.TipoPessoaLogic;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,6 +24,9 @@ public class ClienteBean extends CrudBean<Cliente, ClienteLogic>{
     @Inject
     private ClienteLogic logic;
     
+    @Inject
+    private TipoPessoaLogic tipoPessoaLogic;
+    
     public ClienteBean() {
         super(Cliente.class);
     }
@@ -28,6 +34,10 @@ public class ClienteBean extends CrudBean<Cliente, ClienteLogic>{
     @Override
     public ClienteLogic getLogic() {
         return logic;
+    }
+    
+    public List<TipoPessoa> getListaTipoPessoa(){
+        return tipoPessoaLogic.buscar();
     }
     
 }

@@ -11,8 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 public class ClienteDAO implements Serializable {
+    
+    public Cliente salvarJPA(Cliente cliente) {
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory( "bancoTestePU" );
+        EntityManager em = factory.createEntityManager();
+        em.getTransaction().begin();
+        cliente = em.merge(cliente);
+        em.getTransaction().commit();
+        em.close();
+        return cliente;
+    }
     
     public void salvar(Cliente cliente) {
         try {
@@ -68,5 +81,12 @@ public class ClienteDAO implements Serializable {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public List<Cliente> listarJPA(){
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory( "bancoTestePU" );
+        EntityManager em = factory.createEntityManager();
+        List<Cliente> clientes = em.createQuery("select cli from Cliente cli").getResultList();
+        return clientes;
     }
 }

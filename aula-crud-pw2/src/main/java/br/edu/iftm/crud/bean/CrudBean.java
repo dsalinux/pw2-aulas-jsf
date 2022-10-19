@@ -5,6 +5,7 @@ import br.edu.iftm.crud.util.JSFUtil;
 import br.edu.iftm.crud.util.exception.ErroSistemaException;
 import br.edu.iftm.crud.util.exception.ErroUsuarioException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,9 +48,14 @@ public abstract class CrudBean<E, L extends CrudLogic<E> > extends JSFUtil{
     }
     public void salvar(){
         try {
-            getLogic().salvar(entidade);
+            entidade = getLogic().salvar(entidade);
+            if(entidades == null){
+                entidades = new ArrayList<>();
+            }
+            entidades.add(entidade);
             novaInstancia();
             addInfoMensagem("Cliente salvo com sucesso.");
+            estadoTela = EstadoTela.BUSCANDO;
         } catch (ErroUsuarioException ex) {
             addAvisoMensagem(ex);
         } catch (ErroSistemaException ex) {
