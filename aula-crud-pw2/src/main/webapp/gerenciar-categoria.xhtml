@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        
+        <h:form>
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="Novo" update="@form" icon="pi pi-file-o"
+                                     actionListener="#{categoriaBean.novo()}"
+                                     ></p:commandButton>
+
+                    <p:commandButton value="Salvar" update="@form" icon="pi pi-save" rendered="#{categoriaBean.estadoTela != 'busca'}"
+                                     actionListener="#{categoriaBean.salvar()}"
+                        ></p:commandButton>
+                    
+                    <p:commandButton  update="@form"
+                                      value="#{categoriaBean.estadoTela != 'busca'?'Voltar':'Buscar'}"
+                                     actionListener="#{categoriaBean.buscar()}"
+                        ></p:commandButton>
+                </p:toolbarGroup>
+            </p:toolbar>
+            <p:messages showDetail="true" ></p:messages>
+            <p:growl></p:growl>
+            <p:panelGrid columns="2"
+                         rendered="#{categoriaBean.estadoTela != 'busca'}">
+                
+                <p:outputLabel value="Nome"></p:outputLabel>
+                <p:inputText value="#{categoriaBean.categoria.nome}"></p:inputText>
+            
+                <p:outputLabel value="Categoria Superior"></p:outputLabel>
+                <p:selectOneMenu value="#{categoriaBean.categoria.categoriaSuperior}"
+                                 converter="categoriaConverter">
+                    <f:selectItem itemLabel="Selecione"></f:selectItem>
+                    <f:selectItems value="#{categoriaBean.categoriasSuperiores}"
+                                   var="cat" itemLabel="#{cat.nome}" itemValue="#{cat}"></f:selectItems>
+                </p:selectOneMenu>
+                
+            </p:panelGrid>
+            
+            <p:dataTable value="#{categoriaBean.categorias}" var="categoria"
+                         rendered="#{categoriaBean.estadoTela== 'busca'}">
+                <p:column>
+                    <p:commandButton value="Editar" update="@form"
+                                     actionListener="#{categoriaBean.editar(categoria)}"></p:commandButton>
+                    <p:commandButton value="Remover" update="@form"
+                                     actionListener="#{categoriaBean.remover(categoria)}"></p:commandButton>
+                </p:column>
+                <p:column headerText="ID">
+                    <h:outputText value="#{categoria.id}"></h:outputText>
+                </p:column>
+                <p:column headerText="Nome">
+                    <h:outputText value="#{categoria.nome}"></h:outputText>
+                </p:column>
+                <p:column headerText="Superior">
+                    <h:outputText value="#{categoria.categoriaSuperior.nome}"></h:outputText>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        
+    </h:body>
+</html>
