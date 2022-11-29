@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+	<h:form id="frm">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="Novo" update="@form" icon="pi pi-file-o"
+                                     actionListener="#{documentoBean.novo()}"
+                                     ></p:commandButton>
+
+                    <p:commandButton value="Salvar" update="@form" icon="pi pi-save" rendered="#{documentoBean.estadoTela.name() != 'BUSCANDO'}"
+                                     actionListener="#{documentoBean.salvar()}"
+                        ></p:commandButton>
+                    
+                    <p:commandButton  update="@form"
+                                      value="#{documentoBean.estadoTela.name() != 'BUSCANDO'?'Voltar':'Buscar'}"
+                                      icon="#{documentoBean.estadoTela.name() != 'BUSCANDO'?'pi pi-undo':'pi pi-search'}"
+                                     actionListener="#{documentoBean.buscar()}"
+                        ></p:commandButton>
+                </p:toolbarGroup>
+            </p:toolbar>
+            <p:messages showDetail="true" ></p:messages>
+            <p:growl></p:growl>
+            <p:panelGrid columns="2"
+                         rendered="#{documentoBean.estadoTela.name() != 'BUSCANDO'}">
+                
+                <p:outputLabel value="Documento"></p:outputLabel>
+                <p:fileUpload mode="simple" skinSimple="true" auto="true"
+                      process="@this" update="@form"
+                      listener="#{documentoBean.enviarArquivo}"/>
+		<p:outputLabel value="Nome documento: "></p:outputLabel>
+		<p:outputLabel value="#{documentoBean.entidade.nome}"></p:outputLabel>
+                
+            </p:panelGrid>
+            
+            <p:dataTable value="#{documentoBean.entidades}" var="doc"
+                         rendered="#{documentoBean.estadoTela.name() == 'BUSCANDO'}">
+                <p:column>
+		    <p:commandButton value="Visualizar" actionListener="#{documentoBean.visuzaliaDoc(doc)}" oncomplete="PF('dilogVisualizaDoc').show()" update="@form"></p:commandButton>
+                </p:column>
+                <p:column headerText="ID">
+                    <h:outputText value="#{doc.id}"></h:outputText>
+                </p:column>
+                <p:column headerText="Nome">
+                    <h:outputText value="#{doc.nome}"></h:outputText>
+                </p:column>
+            </p:dataTable>
+	    <p:dialog header="Visualizar Documento" modal="true" width="60%" height="500" visible="#{documentoBean.docVisualiza != null}" 
+		      widgetVar="dilogVisualizaDoc" dynamic="true">
+		<p:ajax event="close" listener="#{documentoBean.fechaVisualizacao()}" update="@form"></p:ajax>
+		<embed style="width: 100%; height: 500px" src="documento?id=#{documentoBean.docVisualiza.id}"></embed>
+	    </p:dialog>
+        </h:form>
+	
+    </h:body>
+</html>
+
