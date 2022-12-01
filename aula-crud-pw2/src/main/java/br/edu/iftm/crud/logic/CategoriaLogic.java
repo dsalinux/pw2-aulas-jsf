@@ -25,7 +25,7 @@ public class CategoriaLogic implements Serializable{
     }
     
     public void remover(Categoria categoria) {
-        dao.remover(categoria);
+        dao.remover(categoria.getId());
     }
     
     public List<Categoria> listar() {

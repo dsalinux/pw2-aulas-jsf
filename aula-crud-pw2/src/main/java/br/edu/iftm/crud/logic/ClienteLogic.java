@@ -23,19 +23,19 @@ public class ClienteLogic implements CrudLogic<Cliente>{
             throw new ErroUsuarioException("O nome é obrigatório.");
         }
        
-        cliente = dao.salvarJPA(cliente);
+        cliente = dao.salvar(cliente);
         return cliente;
     }
 
     @Override
     public void deletar(Cliente cliente) {
-        System.out.println("\n\nDeletou o "+cliente.getClass().getName()+"\n\n");
+        dao.remover(cliente.getId());
     }
 
     @Override
     public List<Cliente> buscar() {
         List<Cliente> clientes = new ArrayList<>();
-        clientes = dao.listarJPA();
+        clientes = dao.listar();
         return clientes;
     }
 
